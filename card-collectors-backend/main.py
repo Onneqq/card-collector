@@ -1,15 +1,18 @@
 # backend/main.py
-from fastapi import FastAPI, HTTPException, Depends, status
+from fastapi import FastAPI, HTTPException, Depends, status, File, UploadFile, Security
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm, HTTPBearer, HTTPAuthorizationCredentials
 from sqlalchemy.orm import Session
 from datetime import datetime, timedelta
 from typing import Optional
-from jose import jwt
+from jose import jwt, JWTError
 from pydantic import BaseModel
 import crud, models, database
 import os
 from dotenv import load_dotenv
+from utils.image_handler import save_image
+from fastapi.staticfiles import StaticFiles
+from crud import UserResponse  # Add this import
 
 load_dotenv()  # Load environment variables
 
@@ -29,6 +32,9 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 ALGORITHM = os.getenv("ALGORITHM", "HS256")
 ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "30"))
 
+# Security scheme
+security = HTTPBearer()
+
 # Models
 class UserBase(BaseModel):
     email: str
@@ -41,6 +47,13 @@ class Token(BaseModel):
     access_token: str
     token_type: str
 
+class TokenData(BaseModel):
+    username: Optional[str] = None
+
+class CardCreate(BaseModel):
+    name: str
+    description: str
+
 # Dependency to get DB session
 def get_db():
     db = database.SessionLocal()
@@ -49,7 +62,30 @@ def get_db():
     finally:
         db.close()
 
-@app.post("/register", response_model=UserBase)
+async def get_current_user(
+    token: HTTPAuthorizationCredentials = Depends(security),
+    db: Session = Depends(get_db)
+):
+    credentials_exception = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Could not validate credentials",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+    try:
+        payload = jwt.decode(token.credentials, SECRET_KEY, algorithms=[ALGORITHM])
+        username: str = payload.get("sub")
+        if username is None:
+            raise credentials_exception
+        token_data = TokenData(username=username)
+    except JWTError:
+        raise credentials_exception
+    
+    user = crud.get_user_by_username(db, username=token_data.username)
+    if user is None:
+        raise credentials_exception
+    return user
+
+@app.post("/register", response_model=UserResponse)
 async def register_user(user: UserCreate, db: Session = Depends(get_db)):
     return crud.create_user(db, username=user.username, email=user.email, password=user.password)
 
@@ -80,3 +116,30 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
 @app.get("/")
 async def root():
     return {"message": "Card Collectors API"}
+
+@app.post("/cards/")
+async def create_card(
+    name: str,
+    description: str,
+    image: UploadFile = File(...),
+    db: Session = Depends(get_db),
+    current_user: models.User = Depends(get_current_user)
+):
+    # Save the image
+    image_path = await save_image(image)
+    
+    # Create card in database
+    db_card = models.Card(
+        name=name,
+        description=description,
+        image_path=image_path,
+        owner_id=current_user.id
+    )
+    db.add(db_card)
+    db.commit()
+    db.refresh(db_card)
+    
+    return db_card
+
+# Mount the static directory
+app.mount("/static", StaticFiles(directory="static"), name="static")

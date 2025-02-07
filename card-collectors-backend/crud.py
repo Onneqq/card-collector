@@ -2,8 +2,16 @@ from sqlalchemy.orm import Session
 import models
 from fastapi import HTTPException
 from passlib.context import CryptContext
+from pydantic import BaseModel
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+class UserResponse(BaseModel):
+    email: str
+    username: str
+
+    class Config:
+        orm_mode = True
 
 def get_user_by_email(db: Session, email: str):
     return db.query(models.User).filter(models.User.email == email).first()
@@ -27,7 +35,12 @@ def create_user(db: Session, username: str, email: str, password: str):
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
-    return db_user
+    
+    # Return user data in the correct format
+    return UserResponse(
+        email=db_user.email,
+        username=db_user.username
+    )
 
 def authenticate_user(db: Session, username: str, password: str):
     user = get_user_by_username(db, username)
@@ -35,4 +48,17 @@ def authenticate_user(db: Session, username: str, password: str):
         return False
     if not pwd_context.verify(password, user.hashed_password):
         return False
-    return user 
+    return user
+
+def create_card(db: Session, card: dict, owner_id: int):
+    db_card = models.Card(**card, owner_id=owner_id)
+    db.add(db_card)
+    db.commit()
+    db.refresh(db_card)
+    return db_card
+
+def get_user_cards(db: Session, user_id: int):
+    return db.query(models.Card).filter(models.Card.owner_id == user_id).all()
+
+def get_card(db: Session, card_id: int):
+    return db.query(models.Card).filter(models.Card.id == card_id).first() 

@@ -4,8 +4,6 @@ from sqlalchemy.orm import sessionmaker
 import models
 
 SQLALCHEMY_DATABASE_URL = "sqlite:///./card_collectors.db"
-# For PostgreSQL, use:
-# SQLALCHEMY_DATABASE_URL = "postgresql://user:password@localhost/dbname"
 
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False}
