@@ -37,7 +37,7 @@ function Login() {
           className="google-auth-button"
         >
           <img 
-            src="/google-icon.png" 
+            src="/google-icon.svg" 
             alt="Google" 
             className="google-icon"
           />

@@ -8,6 +8,15 @@ import './Dashboard.css';
 function Dashboard() {
   const navigate = useNavigate();
   const { user } = useAuth();
+  // Temporary hardcoded email for testing
+  const adminEmail = 'adampenno93@gmail.com';
+  const isAdmin = user?.email && user.email === adminEmail;
+
+  console.log('Admin check:', {
+    adminEmail,
+    userEmail: user?.email,
+    isAdmin
+  });
 
   const handleLogout = async () => {
     try {
@@ -22,6 +31,7 @@ function Dashboard() {
     <div className="dashboard">
       <header className="dashboard-header">
         <div className="user-info">
+          {/* TODO: allow users to select a card to use as profile picture */}
           <img 
             src={user?.photoURL} 
             alt="Profile" 
@@ -32,9 +42,19 @@ function Dashboard() {
             <p>{user?.email}</p>
           </div>
         </div>
-        <button onClick={handleLogout} className="logout-button">
-          Logout
-        </button>
+        <div className="header-actions">
+          {isAdmin && (
+            <button 
+              onClick={() => navigate('/admin')} 
+              className="admin-button"
+            >
+              Admin Portal
+            </button>
+          )}
+          <button onClick={handleLogout} className="logout-button">
+            Logout
+          </button>
+        </div>
       </header>
 
       <main className="dashboard-content">
