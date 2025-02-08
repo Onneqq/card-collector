@@ -1,0 +1,10 @@
+---
+description: When leaving comments, don't leave comments as if you're speaking to me, instead write something like // TODO: add proper spinner lat
+globs: 
+---
+
+# Your rule content
+
+- You can @ files here
+- You can use markdown but dont have to
+When leaving comments, don't leave comments as if you're speaking to me, instead write something like // TODO: add proper spinner lat

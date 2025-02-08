@@ -1,29 +1,34 @@
 # Card Collectors
 
-A React-based web application for card collecting enthusiasts.
+A React-based web application for card collecting enthusiasts, using Firebase for authentication and storage.
 
-## Getting Started
+## Features
 
-### Prerequisites
+- Google Authentication
+- Card Collection Management
+- Card Gallery
+- User Profiles
 
-- Node.js
-- npm
+## Tech Stack
 
-### Installation
-
-1. Clone the repository
-2. Install dependencies:
+- React
+- Firebase (Auth, Firestore, Storage)
+- Material-UI (for styling)
 
 ## Setup
 
-### Backend
-1. Create a virtual environment and activate it
-2. Install dependencies: `pip install -r backend/requirements.txt`
-3. Copy `.env.example` to `.env` in the backend directory and update the values
-4. Run the server: `uvicorn main:app --reload`
+1. Clone the repository
+2. Install dependencies: `npm install`
+3. Copy `.env.example` to `.env` and update the Firebase configuration values
+4. Run the development server: `npm start`
 
-### Frontend
-1. Install dependencies: `npm install`
-2. Copy `.env.example` to `.env` and update the values
-3. Run the development server: `npm start`
+## Project Structure
 
+### TODO
+
+- get google login working
+- set up s3 bucket for image storage
+- set up db to store user collection data
+- set up api to return card info
+- set up frontend to display card info
+- set up way for admin to add cards to db
