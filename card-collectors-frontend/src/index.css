@@ -1,3 +1,5 @@
+@import './styles/theme.css';
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -5,9 +7,78 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+/* Override any remaining white backgrounds */
+.modal-overlay {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.modal-content,
+.collection-controls,
+.empty-collection,
+.packs-header,
+.pack-instructions,
+.empty-packs {
+  background: var(--bg-secondary) !important;
+  color: var(--text-primary);
+  border: var(--card-border);
+  box-shadow: var(--card-shadow);
+}
+
+/* Text colors */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--text-primary);
+}
+
+p,
+span,
+div {
+  color: var(--text-secondary);
+}
+
+/* Additional overrides for specific components */
+.collection-stats,
+.pack-info {
+  background: var(--bg-tertiary);
+  color: var(--accent-primary);
+}
+
+.item-info h3,
+.item-info p,
+.item-details span {
+  color: var(--text-primary);
+}
+
+/* Button overrides */
+.back-button,
+.logout-button,
+.store-button,
+.admin-button,
+.claim-button {
+  background: var(--button-bg);
+  color: var(--button-text);
+  border: var(--card-border);
+  box-shadow: var(--border-glow);
+}
+
+.back-button:hover,
+.logout-button:hover,
+.store-button:hover,
+.admin-button:hover,
+.claim-button:hover:not(:disabled) {
+  background: var(--button-hover);
+  box-shadow: var(--accent-glow);
 }

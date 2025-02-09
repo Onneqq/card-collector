@@ -1,0 +1,25 @@
+:root {
+    --bg-primary: #0a0a0a;
+    --bg-secondary: #141414;
+    --bg-tertiary: #1a1a1a;
+
+    --text-primary: #ffffff;
+    --text-secondary: #b3b3b3;
+    --text-muted: #666666;
+
+    --accent-primary: #00ff00;
+    --accent-secondary: #00cc00;
+    --accent-glow: 0 0 10px rgba(0, 255, 0, 0.5);
+
+    --border-color: #00ff00;
+    --border-glow: 0 0 5px rgba(0, 255, 0, 0.3);
+
+    --card-bg: #141414;
+    --card-border: 1px solid var(--border-color);
+    --card-shadow: var(--border-glow);
+
+    --button-bg: #141414;
+    --button-hover: #1a1a1a;
+    --button-active: #00ff00;
+    --button-text: #00ff00;
+}

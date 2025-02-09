@@ -2,6 +2,7 @@
     padding: 20px;
     max-width: 1200px;
     margin: 0 auto;
+    background: var(--bg-primary);
 }
 
 .packs-header {
@@ -43,17 +44,19 @@
 }
 
 .pack-item {
-    background: white;
+    background: var(--bg-tertiary);
     border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--card-shadow);
     cursor: pointer;
     transition: all 0.2s;
     position: relative;
+    border: var(--card-border);
 }
 
 .pack-item:hover {
     transform: translateY(-4px);
+    box-shadow: var(--accent-glow);
 }
 
 .pack-item.selected {
@@ -78,15 +81,15 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(76, 175, 80, 0.3);
+    background: rgba(0, 255, 0, 0.2);
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 .selected-overlay span {
-    background: #4CAF50;
-    color: white;
+    background: var(--accent-primary);
+    color: var(--bg-primary);
     width: 30px;
     height: 30px;
     border-radius: 50%;
@@ -133,4 +136,10 @@
     color: #666;
     margin-top: 10px;
     font-size: 0.9em;
+}
+
+.pack-modal {
+    background: var(--bg-secondary);
+    border: var(--card-border);
+    box-shadow: var(--card-shadow);
 }

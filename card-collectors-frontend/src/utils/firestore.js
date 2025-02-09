@@ -21,8 +21,6 @@ export async function initializeUserData(userId, email) {
   if (!userDoc.exists()) {
     await setDoc(userRef, {
       email,
-      breadBalance: 100, // Starting balance
-      lastBreadClaim: null,
       ownedImages: [],
       createdAt: serverTimestamp(),
     });
@@ -39,60 +37,6 @@ export async function getUserData(userId) {
   }
   
   return userDoc.data();
-}
-
-// Purchase an image
-export async function purchaseImage(userId, imageData, price) {
-  const userRef = doc(db, 'users', userId);
-  const userDoc = await getDoc(userRef);
-  
-  if (!userDoc.exists()) {
-    throw new Error('User not found');
-  }
-  
-  const userData = userDoc.data();
-  
-  if (userData.breadBalance < price) {
-    throw new Error('Insufficient $BREAD balance');
-  }
-  
-  await updateDoc(userRef, {
-    breadBalance: userData.breadBalance - price,
-    ownedImages: arrayUnion({
-      ...imageData,
-      purchasedAt: Timestamp.now(),
-      price,
-    }),
-  });
-}
-
-// Claim weekly $BREAD
-export async function claimWeeklyBread(userId) {
-  const userRef = doc(db, 'users', userId);
-  const userDoc = await getDoc(userRef);
-  
-  if (!userDoc.exists()) {
-    throw new Error('User not found');
-  }
-  
-  const userData = userDoc.data();
-  const now = new Date();
-  const lastClaim = userData.lastBreadClaim?.toDate();
-  
-  // Check if a week has passed since last claim
-  if (lastClaim && now - lastClaim < 7 * 24 * 60 * 60 * 1000) {
-    const nextClaimDate = new Date(lastClaim.getTime() + 7 * 24 * 60 * 60 * 1000);
-    throw new Error(`Next claim available on ${nextClaimDate.toLocaleDateString()}`);
-  }
-  
-  const WEEKLY_BREAD = 100;
-  
-  await updateDoc(userRef, {
-    breadBalance: userData.breadBalance + WEEKLY_BREAD,
-    lastBreadClaim: serverTimestamp(),
-  });
-  
-  return WEEKLY_BREAD;
 }
 
 export async function claimPackImages(userId, selectedImages) {

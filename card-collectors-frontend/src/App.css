@@ -1,3 +1,38 @@
+@import './styles/theme.css';
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+button {
+  background: var(--button-bg);
+  color: var(--button-text);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--border-glow);
+  transition: all 0.2s ease;
+}
+
+button:hover {
+  background: var(--button-hover);
+  box-shadow: var(--accent-glow);
+}
+
+button:active {
+  background: var(--button-active);
+  color: var(--bg-primary);
+}
+
+.modal-overlay {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.modal-content {
+  background: var(--bg-secondary);
+  border: var(--card-border);
+  box-shadow: var(--card-shadow);
+}
+
 .App {
   text-align: center;
 }
@@ -32,6 +67,7 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }

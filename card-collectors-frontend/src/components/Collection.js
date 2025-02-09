@@ -44,6 +44,10 @@ function Collection() {
     return ['all', ...Array.from(series)];
   };
 
+  const removeFileExtension = (filename) => {
+    return filename.replace(/\.(jpg|jpeg|png|gif|webp)$/i, '');
+  };
+
   if (loading) {
     return <div className="loading">Loading collection...</div>;
   }
@@ -127,11 +131,10 @@ function Collection() {
                 >
                   <img src={image.url} alt={image.name} />
                   <div className="item-info">
-                    <h3>{image.name}</h3>
+                    <h3>{removeFileExtension(image.name)}</h3>
                     <p>{image.series}</p>
                     <div className="item-details">
-                      <span>Purchased: {new Date(image.purchasedAt.seconds * 1000).toLocaleDateString()}</span>
-                      <span>Price: {image.price} $BREAD</span>
+                      <span>Acquired: {new Date(image.purchasedAt.seconds * 1000).toLocaleDateString()}</span>
                     </div>
                   </div>
                 </div>
