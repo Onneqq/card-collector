@@ -33,7 +33,7 @@
 .user-details h1 {
     margin: 0;
     font-size: 1.5rem;
-    color: #333;
+    color: var(--accent-primary);
 }
 
 .user-details p {
@@ -103,7 +103,7 @@
 }
 
 .action-button:hover {
-    background-color: #1976D2;
+    background-color: #282b2f;
     transform: translateY(-2px);
     box-shadow: var(--accent-glow);
 }
@@ -186,27 +186,5 @@
 
 .admin-button:hover {
     background-color: #7b1fa2;
-    transform: translateY(-1px);
-}
-
-.bread-balance {
-    color: #2196F3;
-    font-weight: bold;
-    margin-top: 5px;
-}
-
-.store-button {
-    padding: 8px 16px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: all 0.2s;
-}
-
-.store-button:hover {
-    background-color: #388E3C;
     transform: translateY(-1px);
 }
