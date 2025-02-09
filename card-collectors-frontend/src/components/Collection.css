@@ -2,13 +2,15 @@
     padding: 20px;
     max-width: 1200px;
     margin: 0 auto;
+    background: var(--bg-primary);
 }
 
 .collection-header {
-    background: white;
+    background: var(--bg-secondary);
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--card-shadow);
+    border: var(--card-border);
     margin-bottom: 20px;
 }
 
@@ -54,6 +56,9 @@
     border: 1px solid #ddd;
     border-radius: 4px;
     font-size: 1rem;
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+    border: var(--card-border);
 }
 
 .collection-grid {
@@ -63,16 +68,18 @@
 }
 
 .collection-item {
-    background: white;
+    background: var(--bg-tertiary);
     border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--card-shadow);
     cursor: pointer;
     transition: transform 0.2s;
+    border: var(--card-border);
 }
 
 .collection-item:hover {
     transform: translateY(-4px);
+    box-shadow: var(--accent-glow);
 }
 
 .collection-item img {
@@ -153,10 +160,11 @@
 .view-toggle {
     display: flex;
     gap: 1px;
-    background: #e0e0e0;
+    background: var(--bg-tertiary);
     padding: 2px;
     border-radius: 6px;
     margin-bottom: 15px;
+    border: var(--card-border);
 }
 
 .toggle-button {
@@ -171,8 +179,8 @@
 }
 
 .toggle-button.active {
-    background: white;
-    color: #2196F3;
+    background: var(--accent-primary);
+    color: var(--bg-primary);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 

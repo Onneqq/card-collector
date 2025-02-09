@@ -50,7 +50,6 @@ function Dashboard() {
           <div className="user-details">
             <h1>Welcome, {user?.displayName}</h1>
             <p>{user?.email}</p>
-            <p className="bread-balance">$BREAD Balance: {userData?.breadBalance || 0}</p>
           </div>
         </div>
         <div className="header-actions">
@@ -103,12 +102,6 @@ function Dashboard() {
         </div>
 
         <div className="actions-container">
-          <button 
-            onClick={() => navigate('/store')} 
-            className="action-button"
-          >
-            Browse Store
-          </button>
           <button 
             onClick={() => navigate('/collection')} 
             className="action-button"

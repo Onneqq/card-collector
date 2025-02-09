@@ -6,7 +6,6 @@ import ProtectedRoute from './components/ProtectedRoute';
 import { AuthProvider } from './context/AuthContext';
 import AdminDashboard from './components/AdminDashboard';
 import AdminRoute from './components/AdminRoute';
-import Store from './components/Store';
 import Collection from './components/Collection';
 import Packs from './components/Packs';
 
@@ -31,14 +30,6 @@ function App() {
               <AdminRoute>
                 <AdminDashboard />
               </AdminRoute>
-            } 
-          />
-          <Route 
-            path="/store" 
-            element={
-              <ProtectedRoute>
-                <Store />
-              </ProtectedRoute>
             } 
           />
           <Route 
