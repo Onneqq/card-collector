@@ -3,6 +3,11 @@ import './AdminDashboard.css';
 import { useNavigate } from 'react-router-dom';
 import { getPresignedUploadUrl, getPublicUrl, listImages } from '../utils/s3';
 import ImageModal from './ImageModal';
+import { 
+  addPackToUser, 
+  getAllUsers, 
+  distributePacksToAllUsers 
+} from '../utils/firestore';
 
 function AdminDashboard() {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -17,11 +22,23 @@ function AdminDashboard() {
   const [images, setImages] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
   const [loading, setLoading] = useState(true);
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  const tomorrowStr = tomorrow.toISOString().split('T')[0];
+  const [packCreation, setPackCreation] = useState({
+    dateRange: {
+      start: '',
+      end: tomorrowStr // Set default end date to tomorrow
+    }
+  });
+  const [users, setUsers] = useState([]);
+  const [showPackModal, setShowPackModal] = useState(false);
 
   const navigate = useNavigate();
 
   useEffect(() => {
     loadImages();
+    loadUsers();
   }, []);
 
   const loadImages = async () => {
@@ -33,6 +50,17 @@ function AdminDashboard() {
       console.error('Error loading images:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  console.log('images', images);
+
+  const loadUsers = async () => {
+    try {
+      const usersList = await getAllUsers();
+      setUsers(usersList);
+    } catch (error) {
+      console.error('Error loading users:', error);
     }
   };
 
@@ -96,6 +124,45 @@ function AdminDashboard() {
       });
     } catch (error) {
       console.error('Error uploading:', error);
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handleDistributePacks = async () => {
+    if (!packCreation.dateRange.start) {
+      alert('Please select a start date');
+      return;
+    }
+
+    try {
+      setUploading(true);
+      const startDate = new Date(packCreation.dateRange.start);
+      const endDate = new Date(packCreation.dateRange.end);
+
+      const filteredImages = images.filter(img => {
+        const imageDate = new Date(img.lastModified);
+        return imageDate >= startDate && imageDate <= endDate;
+      });
+
+      if (filteredImages.length < 5) {
+        throw new Error(`Not enough images in selected date range (found ${filteredImages.length}, need at least 5)`);
+      }
+
+      // Distribute packs to all users
+      await distributePacksToAllUsers(filteredImages);
+
+      alert('Packs distributed successfully to all users!');
+      setPackCreation({
+        dateRange: {
+          start: '',
+          end: tomorrowStr
+        }
+      });
+      setShowPackModal(false);
+    } catch (error) {
+      console.error('Error distributing packs:', error);
+      alert(error.message);
     } finally {
       setUploading(false);
     }
@@ -208,6 +275,16 @@ function AdminDashboard() {
           </form>
         </section>
 
+        <section className="pack-management">
+          <h2>Pack Management</h2>
+          <button 
+            className="create-pack-button"
+            onClick={() => setShowPackModal(true)}
+          >
+            Create New Pack
+          </button>
+        </section>
+
         <section className="image-management-section">
           <h2>Manage Images</h2>
           <div className="image-grid">
@@ -234,6 +311,65 @@ function AdminDashboard() {
             )}
           </div>
         </section>
+
+        {showPackModal && (
+          <div className="modal-overlay">
+            <div className="pack-modal">
+              <h2>Distribute Packs to All Users</h2>
+              <button 
+                className="modal-close"
+                onClick={() => setShowPackModal(false)}
+              >
+                ×
+              </button>
+
+              <div className="pack-form">
+                <div className="date-selection">
+                  <h3>Select Date Range for Pack Images</h3>
+                  <div className="date-inputs">
+                    <div className="form-group">
+                      <label>Start Date:</label>
+                      <input
+                        type="date"
+                        value={packCreation.dateRange.start}
+                        onChange={(e) => setPackCreation(prev => ({
+                          dateRange: {
+                            ...prev.dateRange,
+                            start: e.target.value
+                          }
+                        }))}
+                        max={packCreation.dateRange.end}
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label>End Date:</label>
+                      <input
+                        type="date"
+                        value={packCreation.dateRange.end}
+                        onChange={(e) => setPackCreation(prev => ({
+                          dateRange: {
+                            ...prev.dateRange,
+                            end: e.target.value
+                          }
+                        }))}
+                        min={packCreation.dateRange.start}
+                        max={tomorrowStr} // Use tomorrow instead of today
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <button
+                  className="distribute-button"
+                  disabled={!packCreation.dateRange.start || uploading}
+                  onClick={handleDistributePacks}
+                >
+                  {uploading ? 'Distributing...' : 'Distribute Packs to All Users'}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </main>
 
       {selectedImage && (

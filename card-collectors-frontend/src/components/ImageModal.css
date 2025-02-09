@@ -57,3 +57,34 @@
     font-size: 0.9em;
     color: #666;
 }
+
+.modal-purchase-button {
+    width: 100%;
+    padding: 12px;
+    background: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 20px;
+    font-size: 1rem;
+    transition: background-color 0.2s;
+}
+
+.modal-purchase-button:hover {
+    background: #388E3C;
+}
+
+.owned-badge {
+    background: #2196F3;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    display: inline-block;
+    margin-top: 20px;
+}
+
+.purchase-button.owned {
+    background: #4CAF50;
+    cursor: default;
+}

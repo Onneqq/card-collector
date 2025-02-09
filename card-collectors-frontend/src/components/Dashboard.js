@@ -3,20 +3,30 @@ import { useNavigate } from 'react-router-dom';
 import { auth } from '../firebase';
 import { signOut } from 'firebase/auth';
 import { useAuth } from '../context/AuthContext';
+import { getUserData } from '../utils/firestore';
 import './Dashboard.css';
 
 function Dashboard() {
   const navigate = useNavigate();
   const { user } = useAuth();
-  // Temporary hardcoded email for testing
-  const adminEmail = 'adampenno93@gmail.com';
+  const [userData, setUserData] = React.useState(null);
+  const adminEmail = process.env.REACT_APP_ADMIN_EMAIL;
   const isAdmin = user?.email && user.email === adminEmail;
 
-  console.log('Admin check:', {
-    adminEmail,
-    userEmail: user?.email,
-    isAdmin
-  });
+  React.useEffect(() => {
+    if (user) {
+      loadUserData();
+    }
+  }, [user]);
+
+  const loadUserData = async () => {
+    try {
+      const data = await getUserData(user.uid);
+      setUserData(data);
+    } catch (error) {
+      console.error('Error loading user data:', error);
+    }
+  };
 
   const handleLogout = async () => {
     try {
@@ -40,6 +50,7 @@ function Dashboard() {
           <div className="user-details">
             <h1>Welcome, {user?.displayName}</h1>
             <p>{user?.email}</p>
+            <p className="bread-balance">$BREAD Balance: {userData?.breadBalance || 0}</p>
           </div>
         </div>
         <div className="header-actions">
@@ -51,6 +62,12 @@ function Dashboard() {
               Admin Portal
             </button>
           )}
+          <button 
+            onClick={() => navigate('/store')} 
+            className="store-button"
+          >
+            Image Store
+          </button>
           <button onClick={handleLogout} className="logout-button">
             Logout
           </button>
@@ -60,8 +77,8 @@ function Dashboard() {
       <main className="dashboard-content">
         <div className="stats-container">
           <div className="stat-card">
-            <h3>Total Cards</h3>
-            <p>0</p>
+            <h3>Owned Images</h3>
+            <p>{userData?.ownedImages?.length || 0}</p>
           </div>
           <div className="stat-card">
             <h3>Collections</h3>
@@ -71,12 +88,34 @@ function Dashboard() {
             <h3>Rare Cards</h3>
             <p>0</p>
           </div>
+          <div className="stat-card">
+            <h3>Pending Packs</h3>
+            <p>{userData?.pendingPacks || 0}</p>
+            {userData?.pendingPacks > 0 && (
+              <button 
+                onClick={() => navigate('/packs')} 
+                className="action-button"
+              >
+                Open Packs
+              </button>
+            )}
+          </div>
         </div>
 
         <div className="actions-container">
-          <button className="action-button">View Collection</button>
-          <button className="action-button">Add New Cards</button>
-          <button className="action-button">Trade Cards</button>
+          <button 
+            onClick={() => navigate('/store')} 
+            className="action-button"
+          >
+            Browse Store
+          </button>
+          <button 
+            onClick={() => navigate('/collection')} 
+            className="action-button"
+          >
+            View Collection
+          </button>
+          <button className="action-button">Generate AI Art</button>
         </div>
       </main>
     </div>
