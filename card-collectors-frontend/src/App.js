@@ -6,6 +6,9 @@ import ProtectedRoute from './components/ProtectedRoute';
 import { AuthProvider } from './context/AuthContext';
 import AdminDashboard from './components/AdminDashboard';
 import AdminRoute from './components/AdminRoute';
+import Store from './components/Store';
+import Collection from './components/Collection';
+import Packs from './components/Packs';
 
 function App() {
   return (
@@ -28,6 +31,30 @@ function App() {
               <AdminRoute>
                 <AdminDashboard />
               </AdminRoute>
+            } 
+          />
+          <Route 
+            path="/store" 
+            element={
+              <ProtectedRoute>
+                <Store />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/collection" 
+            element={
+              <ProtectedRoute>
+                <Collection />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/packs" 
+            element={
+              <ProtectedRoute>
+                <Packs />
+              </ProtectedRoute>
             } 
           />
           {/* Redirect any unknown routes to login */}

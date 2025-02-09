@@ -1,0 +1,201 @@
+.collection {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.collection-header {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.collection-stats {
+    background: #f8f8f8;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-weight: bold;
+    color: #2196F3;
+}
+
+.collection-controls {
+    display: flex;
+    flex-direction: column;
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.series-filter {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.series-filter select {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+.collection-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.collection-item {
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.collection-item:hover {
+    transform: translateY(-4px);
+}
+
+.collection-item img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.item-info {
+    padding: 15px;
+}
+
+.item-info h3 {
+    margin: 0;
+    font-size: 1.1em;
+    color: #333;
+}
+
+.item-info p {
+    margin: 5px 0;
+    color: #666;
+}
+
+.item-details {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    font-size: 0.9em;
+    color: #666;
+}
+
+.empty-collection {
+    text-align: center;
+    padding: 40px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.empty-collection p {
+    margin-bottom: 20px;
+    color: #666;
+}
+
+.store-button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.2s;
+}
+
+.store-button:hover {
+    background-color: #388E3C;
+    transform: translateY(-1px);
+}
+
+.back-button {
+    padding: 8px 16px;
+    background-color: #2196F3;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.back-button:hover {
+    background-color: #1976D2;
+    transform: translateY(-1px);
+}
+
+.view-toggle {
+    display: flex;
+    gap: 1px;
+    background: #e0e0e0;
+    padding: 2px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+}
+
+.toggle-button {
+    padding: 8px 24px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 14px;
+    border-radius: 4px;
+    transition: all 0.2s;
+    color: #666;
+}
+
+.toggle-button.active {
+    background: white;
+    color: #2196F3;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.toggle-button:hover:not(.active) {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+.coming-soon {
+    color: #666;
+    font-size: 0.9em;
+    max-width: 400px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+@media (min-width: 768px) {
+    .collection-controls {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .view-toggle {
+        margin-bottom: 0;
+    }
+}
