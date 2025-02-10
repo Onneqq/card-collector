@@ -61,12 +61,6 @@ function Dashboard() {
               Admin Portal
             </button>
           )}
-          <button 
-            onClick={() => navigate('/store')} 
-            className="store-button"
-          >
-            Image Store
-          </button>
           <button onClick={handleLogout} className="logout-button">
             Logout
           </button>

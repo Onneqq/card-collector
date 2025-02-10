@@ -26,20 +26,17 @@ A React-based web application for card collecting enthusiasts, using Firebase fo
 
 ### TODO
 
-- get google login working
-- set up s3 bucket for image storage
-- set up db to store user collection data
-- set up api to return card info
+- set up dalle api to merge 2 images into 1 with additional prompts
+- once card image is created, store in s3 and add to users collection as a card
 - set up frontend to display card info
-- set up way for admin to add cards to db
+- ability to trade cards with other users on a marketplace
+- 3d card models
+- site styling
 
+### Maybe?
+
+- smooth transitions between pages
 
 ### TODO for prd
- - edit CORS on s3 bucket with real prd domain
 
-
-Set up an S3 bucket with proper CORS configuration
-Create a function to get presigned URLs for direct upload to S3
-Store image metadata in a database (Firebase Firestore could work well for this)
-Add an image grid to display uploaded images
-Add image deletion functionality
+- edit CORS on s3 bucket with real prd domain
